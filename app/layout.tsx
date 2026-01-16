@@ -20,7 +20,7 @@ interface RootLayoutProps {
 }
 
 const YM_ID = 106286519
-const GA_ID = 'G-26653MGSH4' // Замените на ваш Google Analytics ID когда получите
+const GA_ID = 'G-3T1PW37FDR' // Замените на ваш Google Analytics ID когда получите
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
