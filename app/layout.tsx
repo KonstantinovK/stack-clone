@@ -23,105 +23,97 @@ const YM_ID = 106286519
 const GA_ID = 'G-3T1PW37FDR'
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  // Schema.org микроразметка
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Stackroom",
-    "url": "https://stackroom.ru",
-    "logo": "https://stackroom.ru/images/logo.png",
-    "description": "Мы создаем цифровые решения, которые работают для вашего бизнеса",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "RU"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Customer Service",
-      "url": "https://stackroom.ru/contact"
-    }
-  }
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Stackroom",
-    "url": "https://stackroom.ru",
-    "description": "Digital Solutions - Веб-разработка, UI/UX дизайн, IT интеграция, Внедрение CRM"
-  }
-
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": [
-      {
-        "@type": "Service",
-        "position": 1,
-        "name": "Веб-разработка",
-        "description": "Создаем современные веб-приложения на React, Next.js",
-        "provider": {
-          "@type": "Organization",
-          "name": "Stackroom"
-        }
-      },
-      {
-        "@type": "Service",
-        "position": 2,
-        "name": "UI/UX Дизайн",
-        "description": "Проектируем интуитивные интерфейсы",
-        "provider": {
-          "@type": "Organization",
-          "name": "Stackroom"
-        }
-      },
-      {
-        "@type": "Service",
-        "position": 3,
-        "name": "IT интеграция",
-        "description": "Установка и настройка оборудования",
-        "provider": {
-          "@type": "Organization",
-          "name": "Stackroom"
-        }
-      },
-      {
-        "@type": "Service",
-        "position": 4,
-        "name": "Внедрение CRM",
-        "description": "Настройка CRM под вашу нишу",
-        "provider": {
-          "@type": "Organization",
-          "name": "Stackroom"
-        }
-      }
-    ]
-  }
-
   return (
     <html lang="ru">
-      <head>
-        {/* Schema.org без Script компонента */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(serviceSchema)
-          }}
-        />
-      </head>
       <body className={inter.className}>
         {children}
+        
+        {/* Schema.org Микроразметка - в body работает для обоих валидаторов */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Stackroom",
+              "url": "https://stackroom.ru",
+              "logo": "https://stackroom.ru/images/logo.png",
+              "description": "Мы создаем цифровые решения, которые работают для вашего бизнеса",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "RU"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Customer Service",
+                "url": "https://stackroom.ru/contact"
+              }
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Stackroom",
+              "url": "https://stackroom.ru",
+              "description": "Digital Solutions - Веб-разработка, UI/UX дизайн, IT интеграция, Внедрение CRM"
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "itemListElement": [
+                {
+                  "@type": "Service",
+                  "position": 1,
+                  "name": "Веб-разработка",
+                  "description": "Создаем современные веб-приложения на React, Next.js",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Stackroom"
+                  }
+                },
+                {
+                  "@type": "Service",
+                  "position": 2,
+                  "name": "UI/UX Дизайн",
+                  "description": "Проектируем интуитивные интерфейсы",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Stackroom"
+                  }
+                },
+                {
+                  "@type": "Service",
+                  "position": 3,
+                  "name": "IT интеграция",
+                  "description": "Установка и настройка оборудования",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Stackroom"
+                  }
+                },
+                {
+                  "@type": "Service",
+                  "position": 4,
+                  "name": "Внедрение CRM",
+                  "description": "Настройка CRM под вашу нишу",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Stackroom"
+                  }
+                }
+              ]
+            })
+          }}
+        />
         
         {/* Yandex Metrika */}
         <Script
