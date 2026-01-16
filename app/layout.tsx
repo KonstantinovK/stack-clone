@@ -20,11 +20,112 @@ interface RootLayoutProps {
 }
 
 const YM_ID = 106286519
-const GA_ID = 'G-3T1PW37FDR' // Замените на ваш Google Analytics ID когда получите
+const GA_ID = 'G-3T1PW37FDR'
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  // Schema.org микроразметка
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Stackroom",
+    "url": "https://stackroom.ru",
+    "logo": "https://stackroom.ru/images/logo.png",
+    "description": "Мы создаем цифровые решения, которые работают для вашего бизнеса",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "RU"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "url": "https://stackroom.ru/contact"
+    }
+  }
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Stackroom",
+    "url": "https://stackroom.ru",
+    "description": "Digital Solutions - Веб-разработка, UI/UX дизайн, IT интеграция, Внедрение CRM"
+  }
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "Service",
+        "position": 1,
+        "name": "Веб-разработка",
+        "description": "Создаем современные веб-приложения на React, Next.js и других современных технологиях",
+        "provider": {
+          "@type": "Organization",
+          "name": "Stackroom"
+        }
+      },
+      {
+        "@type": "Service",
+        "position": 2,
+        "name": "UI/UX Дизайн",
+        "description": "Проектируем интуитивные интерфейсы, которые нравятся пользователям",
+        "provider": {
+          "@type": "Organization",
+          "name": "Stackroom"
+        }
+      },
+      {
+        "@type": "Service",
+        "position": 3,
+        "name": "IT интеграция",
+        "description": "Установка и настройка оборудования под ваши задачи",
+        "provider": {
+          "@type": "Organization",
+          "name": "Stackroom"
+        }
+      },
+      {
+        "@type": "Service",
+        "position": 4,
+        "name": "Внедрение CRM",
+        "description": "Настройка CRM под вашу нишу с добавлением функций",
+        "provider": {
+          "@type": "Organization",
+          "name": "Stackroom"
+        }
+      }
+    ]
+  }
+
   return (
     <html lang="ru">
+      <head>
+        {/* Schema.org Микроразметка */}
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema)
+          }}
+        />
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema)
+          }}
+        />
+        <Script
+          id="service-schema"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(serviceSchema)
+          }}
+        />
+      </head>
       <body className={inter.className}>
         {children}
         
@@ -63,7 +164,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </noscript>
         
         <Suspense fallback={null}>
-          <YandexMetrika id={106286519} />
+          <YandexMetrika id={YM_ID} />
         </Suspense>
 
         {/* Google Analytics */}
