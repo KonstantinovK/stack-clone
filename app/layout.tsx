@@ -58,7 +58,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         "@type": "Service",
         "position": 1,
         "name": "Веб-разработка",
-        "description": "Создаем современные веб-приложения на React, Next.js и других современных технологиях",
+        "description": "Создаем современные веб-приложения на React, Next.js",
         "provider": {
           "@type": "Organization",
           "name": "Stackroom"
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         "@type": "Service",
         "position": 2,
         "name": "UI/UX Дизайн",
-        "description": "Проектируем интуитивные интерфейсы, которые нравятся пользователям",
+        "description": "Проектируем интуитивные интерфейсы",
         "provider": {
           "@type": "Organization",
           "name": "Stackroom"
@@ -78,7 +78,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         "@type": "Service",
         "position": 3,
         "name": "IT интеграция",
-        "description": "Установка и настройка оборудования под ваши задачи",
+        "description": "Установка и настройка оборудования",
         "provider": {
           "@type": "Organization",
           "name": "Stackroom"
@@ -88,7 +88,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         "@type": "Service",
         "position": 4,
         "name": "Внедрение CRM",
-        "description": "Настройка CRM под вашу нишу с добавлением функций",
+        "description": "Настройка CRM под вашу нишу",
         "provider": {
           "@type": "Organization",
           "name": "Stackroom"
@@ -100,27 +100,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ru">
       <head>
-        {/* Schema.org Микроразметка */}
-        <Script
-          id="organization-schema"
+        {/* Schema.org без Script компонента */}
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema)
           }}
         />
-        <Script
-          id="website-schema"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(websiteSchema)
           }}
         />
-        <Script
-          id="service-schema"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(serviceSchema)
           }}
