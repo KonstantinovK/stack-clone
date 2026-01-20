@@ -348,13 +348,13 @@ const handleSmoothScroll = (e) => {
         <div className="hero-main-block">
           <div className="hero-top-container">
             <div className="hero-title-large">
-              Внедряем и разрабатываем проекты <br /> 
-              любой сложности и специфики
+              Внедряем и разрабатываем проекты любой сложности и специфики <br /> 
+              
             </div>
           </div>
           
           <div className="hero-subtitle-bottom">
-            Определяем бизнес-задачи<br />
+            Определяем бизнес-задачи <br />
             и точки интеграции
           </div>
         </div>
@@ -1245,12 +1245,12 @@ const handleSmoothScroll = (e) => {
         }
         
         .hero-title-large {
-          font-size: clamp(3rem, 6vw, 5rem);
-          font-weight: 600;
-          line-height: 0.9;
+          font-size: clamp(4rem, 3vw, 2rem);
+          font-weight: 500;
+          line-height: 1;
           letter-spacing: -0.02em;
           flex: 2;
-          max-width: 55%;
+          max-width: 65%;
         }
         
         .hero-subtitle-bottom {
@@ -1260,7 +1260,7 @@ const handleSmoothScroll = (e) => {
           opacity: 0.9;
           align-self: flex-end;
           text-align: right;
-          max-width: 40%;
+          max-width: 50%;
           margin-top: auto;
         }
         
