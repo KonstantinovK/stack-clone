@@ -348,14 +348,14 @@ const handleSmoothScroll = (e) => {
         <div className="hero-main-block">
           <div className="hero-top-container">
             <div className="hero-title-large">
-              Здесь какой-то цепляющий <br /> 
-              заголовок
+              Внедряем и разрабатываем проекты <br /> 
+              любой сложности и специфики
             </div>
           </div>
           
           <div className="hero-subtitle-bottom">
-            Создаем решения<br />
-            которые помогают 
+            Определяем бизнес-задачи<br />
+            и точки интеграции
           </div>
         </div>
         
