@@ -24,7 +24,7 @@ export default function StackLinkPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalServiceType, setModalServiceType] = useState('StackLink: подключение к промышленному оборудованию');
 
-  const openModal = (serviceType) => {
+  const openModal = (serviceType: string) => {
     setModalServiceType(serviceType);
     setIsModalOpen(true);
   };
