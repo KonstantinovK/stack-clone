@@ -671,7 +671,7 @@ body {
 .body-x-large {
   font-size: 1.75rem;
   line-height: 1.3;
-}
+}н
 
 .heading-main {
   font-size: clamp(2rem, 5vw, 4rem);
@@ -1216,4 +1216,287 @@ body {
     gap: 1.5rem;
     padding: 0 1.5rem;
   }
+}
+
+/* ===================== */
+/* СТИЛИ ДЛЯ СТРАНИЦЫ STACKLINK */
+/* ===================== */
+
+.stacklink-page {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.stacklink-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.stacklink-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
+  pointer-events: none;
+}
+
+.stacklink-section {
+  position: relative;
+  padding: 6rem 0;
+}
+
+.stacklink-section-bg-white {
+  background: #ffffff;
+}
+
+.stacklink-section-bg-dark {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.stacklink-gradient-text {
+  background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stacklink-cta-primary {
+  background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
+}
+
+.stacklink-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4), 0 4px 6px -2px rgba(59, 130, 246, 0.2);
+}
+
+.stacklink-cta-secondary {
+  background: white;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.stacklink-cta-secondary:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.stacklink-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stacklink-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.stacklink-comparison-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.stacklink-comparison-table th,
+.stacklink-comparison-table td {
+  padding: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.stacklink-comparison-table th:last-child,
+.stacklink-comparison-table td:last-child {
+  border-right: none;
+}
+
+.stacklink-comparison-table tr:last-child th,
+.stacklink-comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.stacklink-comparison-old {
+  background: #f8fafc;
+}
+
+.stacklink-comparison-new {
+  background: #eff6ff;
+  position: relative;
+}
+
+.stacklink-comparison-new::after {
+  content: 'ВЫБОР ПРОФИ';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #2563eb;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 0 0 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .stacklink-section {
+    padding: 3rem 0;
+  }
+  
+  .stacklink-comparison-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+  .stacklink-problem-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .stacklink-problem-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .stacklink-problem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: #cbd5e1;
+  }
+
+  .stacklink-problem-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .stacklink-problem-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .stacklink-problem-desc {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+.stacklink-hero-improved {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stacklink-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.stacklink-hero-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+.stacklink-hero-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #64748b;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stacklink-economy-button {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3), 0 2px 4px -1px rgba(16, 185, 129, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stacklink-economy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4), 0 4px 6px -2px rgba(16, 185, 129, 0.2);
+}
+
+.stacklink-problem-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.stacklink-problem-section {
+  padding-top: 1rem;
+  margin: 2rem;
+
+}
+
+.stacklink-problem-title {
+  margin-bottom: 0.5rem;
+}
+
+.stacklink-problem-subtitle {
+  margin-bottom: 2.5rem;
 }

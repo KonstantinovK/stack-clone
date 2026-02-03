@@ -88,6 +88,11 @@ export default function HomePage() {
       speedY: 1.7,
     },
     { 
+      id: 5, 
+      name: 'Константин', 
+      role: 'Product Manager', 
+      x: 250, y: 280, 
+      color: '#1786b9ff', 
       speedX: 3.4, 
       speedY: -3.7,
     },
@@ -114,7 +119,7 @@ export default function HomePage() {
     {
       title: 'StackLink',
       href: '/services/stacklink',
-      description: 'Решение для удаленного доступа к оборудованию'
+      description: 'Удаленный доступ к оборудованию за 15 минут'
     }
   ]
   
@@ -147,6 +152,12 @@ export default function HomePage() {
       id: 4,
       title: 'Внедрение CRM',
       description: 'Настроим CRM под вашу нишу, добавим привычные и новые функции, поможем персоналу работать эффективно и с удовольствием.'
+    },
+    {
+      id: 5,
+      title: 'StackLink',
+      description: 'Удаленный доступ к промышленному оборудованию за 15 минут. Без сложных VPN, без открытых портов, без привлечения сетевого инженера.',
+      link: '/services/stacklink'
     }
   ]
   

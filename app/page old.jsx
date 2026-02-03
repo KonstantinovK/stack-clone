@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function HomePage() {
   // ===================== СОСТОЯНИЯ =====================
@@ -13,39 +13,36 @@ export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Dropdown states
-  const [isServicesOpen, setIsServicesOpen] = useState(false)
-  const dropdownTimeoutRef = useRef(null)
-  
   // Hero states
   const [isHovered, setIsHovered] = useState(false)
   const marqueeRef = useRef(null)
 
-  // ===================== ПЛАВНАЯ ПРОКРУТКА =====================
-  const handleSmoothScroll = (e) => {
-    e.preventDefault();
+// ===================== ПЛАВНАЯ ПРОКРУТКА =====================
+const handleSmoothScroll = (e) => {
+  e.preventDefault();
+  
+  const targetId = e.currentTarget.getAttribute('href');
+  if (!targetId || targetId === '#') return;
+  
+  // Закрываем мобильное меню
+  setIsMenuOpen(false);
+  
+  const id = targetId.replace('#', '');
+  const targetElement = document.getElementById(id);
+  
+  if (targetElement) {
+    // Используем scrollIntoView с полифиллом для offset
+    const yOffset = -140; // Отступ для header
+    const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
     
-    const targetId = e.currentTarget.getAttribute('href');
-    if (!targetId || targetId === '#') return;
+    window.scrollTo({
+      top: y,
+      behavior: 'smooth'
+    });
     
-    // Закрываем мобильное меню
-    setIsMenuOpen(false);
-    
-    const id = targetId.replace('#', '');
-    const targetElement = document.getElementById(id);
-    
-    if (targetElement) {
-      const yOffset = -140;
-      const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      
-      window.scrollTo({
-        top: y,
-        behavior: 'smooth'
-      });
-      
-      window.history.pushState(null, '', targetId);
-    }
-  };
+    window.history.pushState(null, '', targetId);
+  }
+};
   
   // FigmaCursors states
   const containerRef = useRef(null)
@@ -88,35 +85,17 @@ export default function HomePage() {
       speedY: 1.7,
     },
     { 
+      id: 5, 
+      name: 'Константин', 
+      role: 'Product Manager', 
+      x: 250, y: 280, 
+      color: '#1786b9ff', 
       speedX: 3.4, 
       speedY: -3.7,
     },
   ])
   
   // ===================== ДАННЫЕ =====================
-  
-  const servicesMenu = [
-    {
-      title: 'Внедрение Битрикс24',
-      href: '/services/bitrix24-implementation',
-      description: 'Полное внедрение CRM под ваш бизнес'
-    },
-    {
-      title: 'Сопровождение Битрикс24',
-      href: '/services/bitrix24-support',
-      description: 'Техническая поддержка и развитие системы'
-    },
-    {
-      title: 'Тарифы Битрикс24',
-      href: '/services/bitrix24-pricing',
-      description: 'Выбор оптимального тарифного плана'
-    },
-    {
-      title: 'StackLink',
-      href: '/services/stacklink',
-      description: 'Решение для удаленного доступа к оборудованию'
-    }
-  ]
   
   const marqueeItems = [
     "Внедрение CRM систем",
@@ -159,6 +138,15 @@ export default function HomePage() {
     { id: 6, title: 'MVP мобильного приложения', category: 'Mobile App', image: '/images/projects/mobile-app-mvp.webp'},
     { id: 7, title: 'Аналитический портал', category: 'UI/UX Design', image: '/images/projects/analytics-portal.webp'},
     { id: 8, title: 'Service Desk система', category: 'Web Development', image: '/images/projects/service-desk.webp'},
+  ]
+  
+  const clients = [
+    { name: 'Client 1', logo: '/images/client1.svg' },
+    { name: 'Client 2', logo: '/images/client2.svg' },
+    { name: 'Client 3', logo: '/images/client3.svg' },
+    { name: 'Client 4', logo: '/images/client4.svg' },
+    { name: 'Client 5', logo: '/images/client5.svg' },
+    { name: 'Client 6', logo: '/images/client6.svg' }
   ]
   
   // ===================== ЭФФЕКТЫ =====================
@@ -253,26 +241,6 @@ export default function HomePage() {
     setIsMenuOpen(false)
   }
   
-  // Обработчики для выпадающего меню
-  const handleServicesMouseEnter = () => {
-    if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current)
-    }
-    setIsServicesOpen(true)
-  }
-  
-  const handleServicesMouseLeave = () => {
-    dropdownTimeoutRef.current = setTimeout(() => {
-      setIsServicesOpen(false)
-    }, 200)
-  }
-  
-  const handleDropdownClick = (e) => {
-    setIsServicesOpen(false)
-    setIsMenuOpen(false)
-    // Переход на страницу произойдет через href атрибут
-  }
-  
   // ===================== РЕНДЕР =====================
   
   return (
@@ -295,119 +263,20 @@ export default function HomePage() {
           </a>
           
           <nav className="nav-desktop">
-            {/* Выпадающее меню "Сервисы" */}
-            <div
-  className="services-dropdown-trigger"
-  onMouseEnter={() => setIsServicesOpen(true)}
-  onMouseLeave={() => setIsServicesOpen(false)}
-  style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', height: '96px', zIndex: 1001 }}
->
-  <div className="nav-element services-dropdown-wrapper" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', width: '100%', height: '100%', margin: 0, overflow: 'visible' }}>
-    <span>Сервисы</span>
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="currentColor"
-      className="dropdown-arrow"
-      style={{
-        marginLeft: '8px',
-        marginBottom: '20px',
-        transition: 'transform 0.2s ease',
-        transform: isServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)'
-      }}
-    >
-      <path d="M6 8.5L1.5 4H10.5L6 8.5Z" />
-    </svg>
-  </div>
-  
-               {/* Выпадающий список */}
-               <AnimatePresence>
-                 {isServicesOpen && (
-                   <motion.div
-                     initial={{ opacity: 0, y: -10 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     exit={{ opacity: 0, y: -10 }}
-                     transition={{ duration: 0.2 }}
-                     className="services-dropdown-menu"
-                     onMouseEnter={() => setIsServicesOpen(true)}
-                     onMouseLeave={() => setIsServicesOpen(false)}
-                     style={{
-                       position: 'absolute',
-                       top: '100%',
-                       left: 0,
-                       background: 'transparent',
-                       backdropFilter: 'none',
-                       WebkitBackdropFilter: 'none',
-                       border: 'none',
-                       borderRadius: '0',
-                       padding: '12px 0 0 0',
-                       boxShadow: 'none',
-                       zIndex: 9999,
-                       display: 'flex',
-                       flexDirection: 'column'
-                     }}
-                   >
-                     {servicesMenu.map((service, index) => (
-                       <motion.a
-                         key={service.title}
-                         href={service.href}
-                         onClick={handleDropdownClick}
-                         initial={{ opacity: 0, y: -10 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         transition={{ delay: index * 0.05 }}
-                         className="dropdown-item"
-                         style={{
-                           display: 'block',
-                           padding: '0 20px 20px 20px',
-                           borderRadius: '8px',
-                           textDecoration: 'none',
-                           color: 'var(--black)',
-                           fontWeight: '500',
-                           fontSize: '16px',
-                           letterSpacing: '0.02em',
-                           transition: 'all 0.2s ease',
-                           marginBottom: '6px',
-                           background: 'rgba(248, 248, 248, 1)',
-                           border: '1px solid rgba(19, 19, 19, 0.08)',
-                           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                           width: '100%',
-                           boxSizing: 'border-box',
-                           height: '96px',
-                           display: 'flex',
-                           alignItems: 'flex-end',
-                           justifyContent: 'flex-start',
-                           position: 'relative',
-                           overflow: 'hidden',
-                           whiteSpace: 'nowrap',
-                           textAlign: 'left',
-                           lineHeight: '1'
-                         }}
-                       >
-                         <div className="dropdown-item-content">
-                           <span className="dropdown-item-title" style={{ display: 'block', fontWeight: '600', fontSize: '14px', marginBottom: '4px' }}>{service.title}</span>
-                           <span className="dropdown-item-desc" style={{ display: 'block', fontSize: '12px', opacity: '0.7', lineHeight: '1.3' }}>{service.description}</span>
-                         </div>
-                       </motion.a>
-                     ))}
-                   </motion.div>
-                 )}
-               </AnimatePresence>
-             </div>
-             
-             <a href="#about" className="nav-element" onClick={handleSmoothScroll}>О нас</a>
-             <a href="#articles" className="nav-element" onClick={handleSmoothScroll}>Блог</a>
-             <a href="/contact" className="nav-element hello">
-               <div className="star-icon-corner">
-                 <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
-                   <g clipPath="url(#clip0_275_1034)">
-                     <path d="M39.317 15.7815L38.0424 11.858L25.0584 16.0768L33.0832 5.03198L29.7458 2.60726L21.721 13.6526V0H17.596V13.6526L9.57122 2.60726L6.23434 5.03198L14.2586 16.0768L1.27466 11.858L0 15.7815L12.984 20.0003L0 24.219L1.27466 28.142L14.2586 23.9232L6.23434 34.968L9.57122 37.3927L17.596 26.3479V40H21.721V26.3479L29.7458 37.3927L33.0832 34.968L25.0584 23.9232L38.0424 28.142L39.317 24.219L26.333 20.0003L39.317 15.7815Z" fill="currentColor"/>
-                   </g>
-                 </svg>
-               </div>
-               Скажи привет <span className="highlight"></span>
-             </a>
-             <a href="#projects" className="nav-element projects" onClick={handleSmoothScroll}>Проекты</a>
+            <a href="#services" className="nav-element" onClick={handleSmoothScroll}>Сервисы</a>
+            <a href="#about" className="nav-element" onClick={handleSmoothScroll}>О нас</a>
+            <a href="#articles" className="nav-element" onClick={handleSmoothScroll}>Блог</a>
+            <a href="/contact" className="nav-element hello">
+              <div className="star-icon-corner">
+                <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+                  <g clipPath="url(#clip0_275_1034)">
+                    <path d="M39.317 15.7815L38.0424 11.858L25.0584 16.0768L33.0832 5.03198L29.7458 2.60726L21.721 13.6526V0H17.596V13.6526L9.57122 2.60726L6.23434 5.03198L14.2586 16.0768L1.27466 11.858L0 15.7815L12.984 20.0003L0 24.219L1.27466 28.142L14.2586 23.9232L6.23434 34.968L9.57122 37.3927L17.596 26.3479V40H21.721V26.3479L29.7458 37.3927L33.0832 34.968L25.0584 23.9232L38.0424 28.142L39.317 24.219L26.333 20.0003L39.317 15.7815Z" fill="currentColor"/>
+                  </g>
+                </svg>
+              </div>
+              Скажи привет <span className="highlight"></span>
+            </a>
+            <a href="#projects" className="nav-element projects" onClick={handleSmoothScroll}>Проекты</a>
           </nav>
 
           <button 
@@ -427,65 +296,12 @@ export default function HomePage() {
       <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}>
         <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
           <nav className="mobile-nav">
-            {/* Мобильное выпадающее меню */}
-            <div 
-              className="mobile-nav-item services-dropdown-mobile"
-              onClick={() => setIsServicesOpen(!isServicesOpen)}
-              style={{ 
-                position: 'relative',
-                flexDirection: 'column',
-                alignItems: 'flex-start'
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%'
-              }}>
-                <span className="mobile-nav-text">Сервисы</span>
-                <svg 
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 12 12" 
-                  fill="currentColor"
-                  style={{
-                    transition: 'transform 0.2s ease',
-                    transform: isServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)'
-                  }}
-                >
-                  <path d="M6 8.5L1.5 4H10.5L6 8.5Z" />
-                </svg>
-              </div>
-              
-              <AnimatePresence>
-                {isServicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="mobile-dropdown-content"
-                  >
-                    {servicesMenu.map((service) => (
-                      <a
-                        key={service.title}
-                        href={service.href}
-                        onClick={(e) => {
-                          handleDropdownClick(e);
-                          setIsMenuOpen(false);
-                        }}
-                        className="mobile-submenu-item"
-                      >
-                        <div className="mobile-submenu-title">{service.title}</div>
-                        <div className="mobile-submenu-desc">{service.description}</div>
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            
+            <a href="#services" className="mobile-nav-item" onClick={(e) => {
+              handleSmoothScroll(e);
+              handleNavClick();
+            }}>
+              <span className="mobile-nav-text">Сервисы</span>
+            </a>
             <a href="#about" className="mobile-nav-item" onClick={(e) => {
               handleSmoothScroll(e);
               handleNavClick();
@@ -588,11 +404,6 @@ export default function HomePage() {
                 <h3 className="service-title">{service.title}</h3>
               </div>
               <p className="service-description">{service.description}</p>
-              {service.link && (
-                <a href={service.link} className="service-link">
-                  <button className="learn-more-btn">Подробнее</button>
-                </a>
-              )}
             </div>
           ))}
         </div>
@@ -634,12 +445,14 @@ export default function HomePage() {
                 <div className="project-image">
                   <div className="project-image-container">
                     {project.image ? (
+                     // Если есть картинка - показываем её
                      <img 
                         src={project.image} 
                         alt={project.title}
                         className="project-real-image"
                     />
                   ) : (
+                      // Если нет картинки - показываем плейсхолдер
                     <div className="project-placeholder">
                       <span className="project-number">{project.id.toString().padStart(2, '0')}</span>
                     </div>
@@ -723,6 +536,8 @@ export default function HomePage() {
         
         {/* Benefits Section */}
         <div className="about-benefits">
+          
+          
           <div className="benefits-breakbar-grid">
             {[
               { 
@@ -903,16 +718,16 @@ export default function HomePage() {
               <h3 className="footer-block-title">Услуги</h3>
               <ul className="footer-block-list">
                 <li className="footer-block-item">
-                  <a href="/services/bitrix24-implementation" className="footer-block-link">Внедрение Битрикс24</a>
-                </li>
-                <li className="footer-block-item">
-                  <a href="/services/bitrix24-support" className="footer-block-link">Сопровождение Битрикс24</a>
-                </li>
-                <li className="footer-block-item">
-                  <a href="/services/bitrix24-pricing" className="footer-block-link">Тарифы Битрикс24</a>
-                </li>
-                <li className="footer-block-item">
                   <a href="#" className="footer-block-link">Веб-разработка</a>
+                </li>
+                <li className="footer-block-item">
+                  <a href="#" className="footer-block-link">UI/UX Дизайн</a>
+                </li>
+                <li className="footer-block-item">
+                  <a href="#" className="footer-block-link">IT интеграция</a>
+                </li>
+                <li className="footer-block-item">
+                  <a href="#" className="footer-block-link">Консалтинг</a>
                 </li>
               </ul>
             </div>
@@ -996,10 +811,9 @@ export default function HomePage() {
           background: transparent;
           width: 100%;
           padding: 0 var(--section-padding-desktop);
-          height: auto;
-          min-height: var(--nav-height);
-          padding-bottom: 0px;
-          overflow: visible;
+          height: auto; /* Изменить с фиксированной высоты */
+          min-height: var(--nav-height); /* Минимальная высота */
+          padding-bottom: 0px; /* Добавить отступ снизу */
         }
         
         .navbar.scrolled {
@@ -1011,12 +825,11 @@ export default function HomePage() {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-          min-height: var(--nav-height);
+          height: var(--nav-height);
           gap: 12px;
           width: 100%;
           margin: 0;
           padding: calc(var(--gutter) * 0.5) 3px;
-          position: relative;
         }
         
         .nav-desktop {
@@ -1024,7 +837,6 @@ export default function HomePage() {
           align-items: flex-end;
           gap: 12px;
           flex-shrink: 0;
-          position: relative;
         }
         
         .nav-element {
@@ -1048,215 +860,6 @@ export default function HomePage() {
           white-space: nowrap;
           text-align: left;
           line-height: 1;
-        }
-        
-        /* ===================== DROPDOWN STYLES ===================== */
-        .services-dropdown-trigger {
-          position: relative;
-          display: flex;
-          align-items: flex-end;
-          height: 96px;
-        }
-        
-        .services-dropdown-wrapper {
-          position: static;
-          cursor: pointer;
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          min-width: 100px !important;
-          padding: 0 20px 20px 20px !important;
-          border-radius: 8px;
-          text-decoration: none;
-          color: var(--black);
-          font-weight: 500;
-          font-size: 16px;
-          letter-spacing: 0.02em;
-          transition: all 0.2s ease;
-          background: rgba(248, 248, 248, 0.9);
-          border: 1px solid rgba(19, 19, 19, 0.08);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-          overflow: visible;
-          white-space: nowrap;
-          text-align: left;
-          line-height: 1;
-        }
-        
-        .services-dropdown-wrapper:hover {
-          background: var(--black);
-          color: var(--white);
-          border-color: var(--black);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          transform: translateY(-1px);
-        }
-        
-        .services-dropdown-wrapper:hover {
-          background: var(--black);
-          color: var(--white);
-          border-color: var(--black);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          transform: translateY(-1px);
-        }
-        
-        .services-dropdown-wrapper:hover {
-          background: var(--black);
-          color: var(--white);
-          border-color: var(--black);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          transform: translateY(-1px);
-        }
-        
-        .services-dropdown-wrapper .nav-element-content {
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-        
-        
-        
-        .services-dropdown-wrapper .nav-element-content {
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-
-        .services-dropdown-menu {
-          background: rgba(248, 248, 248, 0.95) !important;
-          backdrop-filter: blur(20px) !important;
-          -webkit-backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(19, 19, 19, 0.15) !important;
-          border-radius: 8px !important;
-          padding: 12px !important;
-          box-shadow:
-            0 8px 32px rgba(0, 0, 0, 0.15) !important,
-            0 2px 8px rgba(0, 0, 0, 0.05) !important;
-          z-index: 9999 !important;
-          display: flex !important;
-          flex-direction: column !important;
-        }
-        
-        .dropdown-item {
-          display: block;
-          padding: 0 20px 20px 20px; /* Согласовано с .nav-element[href="#services"] */
-          border-radius: 8px;
-          text-decoration: none;
-          color: var(--black);
-          font-weight: 500;
-          font-size: 16px;
-          letter-spacing: 0.02em;
-          transition: all 0.2s ease;
-          margin-bottom: 6px;
-          border: 1px solid rgba(19, 19, 19, 0.08);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-          width: 100%;
-          box-sizing: border-box;
-          height: 96px;
-          display: flex;
-          align-items: flex-end;
-          justify-content: flex-start;
-          position: relative;
-          overflow: hidden;
-          white-space: nowrap;
-          text-align: left;
-          line-height: 1;
-        }
-        
-        .dropdown-item:hover {
-          background: var(--black);
-          color: var(--white);
-          border-color: var(--black);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          transform: translateY(-1px);
-        }
-
-        .dropdown-item:last-child {
-          margin-bottom: 0;
-        }
-        
-        .dropdown-item-content {
-          display: flex;
-          flex-direction: column;
-        }
-        
-        .dropdown-item-title {
-          font-weight: 600;
-          font-size: 14px;
-          margin-bottom: 4px;
-        }
-        
-        .dropdown-item-desc {
-          font-size: 12px;
-          opacity: 0.7;
-          line-height: 1.3;
-        }
-
-        .dropdown-item-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 4px;
-        }
-        
-        .dropdown-item-title {
-          font-weight: 600;
-          font-size: 14px;
-          margin-bottom: 4px;
-        }
-        
-        .dropdown-item-desc {
-          font-size: 12px;
-          opacity: 0.7;
-          line-height: 1.3;
-        }
-        
-        .dropdown-arrow {
-          opacity: 0.6;
-          transition: opacity 0.2s ease;
-        }
-        
-        .dropdown-item:hover .dropdown-arrow {
-          opacity: 1;
-        }
-        
-        /* Мобильное выпадающее меню */
-        .mobile-dropdown-content {
-          overflow: hidden;
-          margin-top: 10px;
-          padding-left: 20px;
-          width: 100%;
-        }
-        
-        .mobile-submenu-item {
-          display: block;
-          padding: 12px;
-          border-radius: 6px;
-          text-decoration: none;
-          color: var(--black);
-          font-size: 14px;
-          background: rgba(0,0,0,0.05);
-          margin-bottom: 4px;
-          transition: all 0.2s ease;
-        }
-        
-        .mobile-submenu-item:hover {
-          background: var(--black);
-          color: var(--white);
-        }
-        
-        .mobile-submenu-title {
-          font-weight: 600;
-          margin-bottom: 2px;
-        }
-        
-        .mobile-submenu-desc {
-          font-size: 12px;
-          opacity: 0.7;
         }
         
         .nav-element[href="#services"],
@@ -1723,7 +1326,7 @@ export default function HomePage() {
         .services-section {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 20px; /* ВНУТРЕННИЕ ОТСТУПЫ МЕЖДУ ЭЛЕМЕНТАМИ */
         }
         
         .services-badge {
@@ -1802,36 +1405,13 @@ export default function HomePage() {
           flex: 1;
         }
         
-        .service-link {
-          display: block;
-          margin-top: auto;
-        }
-        
-        .learn-more-btn {
-          padding: 12px 24px;
-          background: var(--black);
-          color: var(--white);
-          border: none;
-          border-radius: 8px;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          width: 100%;
-        }
-        
-        .learn-more-btn:hover {
-          background: #333;
-          transform: translateY(-2px);
-        }
-        
         .services-breakbar {
           background: var(--black);
           color: var(--white);
           padding: 1rem 0;
           border-radius: 8px;
           width: 100%;
-          margin-top: 10px;
+          margin-top: 10px; /* ← ДОБАВЛЯЕМ ОТСТУП ЗДЕСЬ */
         }
         
         .breakbar-content {
@@ -1876,12 +1456,13 @@ export default function HomePage() {
         }
         
         /* ===================== PROJECTS SECTION ===================== */
+
         .services-badge,
         .projects-badge,
         .about-badge,
         .clients-badge {
         display: flex;
-        flex-direction: row;
+        flex-direction: row; /* ← ВАЖНО! */
         align-items: center;
         gap: 1rem;
         margin-bottom: 20px;
@@ -1951,12 +1532,12 @@ export default function HomePage() {
 .project-real-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Обрезает фото по размерам карточки */
   transition: transform 0.5s ease;
 }
 
 .project-card:hover .project-real-image {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Легкий зум при наведении */
 }
 
 .project-placeholder {
@@ -2245,6 +1826,16 @@ export default function HomePage() {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+
+
+
+
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
 .breakbar-benefit-icon {
   font-size: 2.5rem;
   margin-bottom: 5px;
@@ -2279,7 +1870,70 @@ export default function HomePage() {
   opacity: 1;
 }
 
-/* ===================== CLIENTS SECTION ===================== */
+/* АДАПТИВНОСТЬ */
+@media (max-width: 1024px) {
+  .benefits-breakbar-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .breakbar-benefit-card {
+    padding: 20px;
+  }
+  
+  .breakbar-benefit-icon {
+    font-size: 2rem;
+  }
+  
+  .breakbar-benefit-title {
+    font-size: 1.1rem;
+  }
+  
+  .breakbar-benefit-desc {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-breakbar-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .benefits-title {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .breakbar-benefit-card {
+    padding: 18px;
+  }
+  
+  .breakbar-benefit-icon {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits-title {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+  }
+  
+  .breakbar-benefit-card {
+    padding: 15px;
+  }
+  
+  .breakbar-benefit-title {
+    font-size: 1rem;
+  }
+  
+  .breakbar-benefit-desc {
+    font-size: 0.85rem;
+  }
+}
+
+        /* ===================== CLIENTS SECTION ===================== */
 .clients-section {
   display: flex;
   flex-direction: column;
@@ -2288,7 +1942,7 @@ export default function HomePage() {
 
 .badge-wrapper {
   display: flex;
-  align-items: center;
+  align-items: center; /* ← ОБЯЗАТЕЛЬНО! */
   justify-content: flex-start;
   gap: 1rem;
 }
@@ -2539,12 +2193,127 @@ export default function HomePage() {
   color: #666;
   line-height: 1.5;
 }
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 1200px) {
+  .clients-main-container {
+    padding: 50px;
+  }
+  
+  .clients-heading {
+    font-size: 3rem;
+  }
+  
+  .clients-content-container {
+    gap: 30px;
+  }
+  
+  .clients-logos-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .clients-main-container {
+    padding: 40px;
+  }
+  
+  .clients-heading {
+    font-size: 2.5rem;
+  }
+  
+  .clients-content-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .clients-logos-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .dropzone {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .clients-main-container {
+    padding: 30px;
+  }
+  
+  .clients-heading {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  .clients-subheading {
+    font-size: 1.1rem;
+  }
+  
+  .clients-logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 15px;
+  }
+  
+  .client-logo-box {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .dropzone {
+    padding: 30px;
+    min-height: 250px;
+    border-radius: 12px;
+  }
+  
+  .dropzone-title {
+    font-size: 1.3rem;
+  }
+  
+  .dropzone-subtitle {
+    font-size: 1rem;
+  }
+  
+  .dropzone-icon {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .clients-main-container {
+    padding: 20px;
+  }
+  
+  .clients-heading {
+    font-size: 1.8rem;
+  }
+  
+  .clients-logos-grid {
+    gap: 12px;
+  }
+  
+  .client-logo-box {
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .dropzone {
+    padding: 25px;
+    min-height: 220px;
+  }
+  
+  .sad-icon {
+    font-size: 2.5rem;
+  }
+}
         
         /* ===================== FOOTER SECTION ===================== */
         .footer-section {
           background: var(--black);
-          padding: 80px var(--section-padding-desktop) 0;
-          margin-top: 0;
+          padding: 80px var(--section-padding-desktop) 0; /* ← ДОБАВЬТЕ ОТСТУПЫ ПО БОКАМ */
+          margin-top: 0; /* Убираем, т.к. есть gap у родителя */
           width: 100%;
         }
         
@@ -2558,6 +2327,7 @@ export default function HomePage() {
           gap: 30px;
         }
 
+                /* Добавьте в ваш стиль футера */
         .footer-cta {
           background: #333333;
           border-radius: 12px;
@@ -2693,6 +2463,11 @@ export default function HomePage() {
             gap: 25px;
           }
           
+          .clients-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+          }
+          
           .footer-grid {
             gap: 25px;
           }
@@ -2782,8 +2557,8 @@ export default function HomePage() {
         
         @media (max-width: 991px) {
           :root {
-          --nav-height: 64px;
-          --header-top-padding: 15px;
+          --nav-height: 64px; /* Уменьшаем высоту */
+          --header-top-padding: 15px; /* ОТСТУП СВЕРХУ ДЛЯ HEADER */
           }
 
           .navbar {
@@ -2929,6 +2704,23 @@ export default function HomePage() {
             padding: 20px;
           }
           
+          .clients-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+          }
+          
+          .client-item {
+            padding: 20px;
+            min-height: 120px;
+          }
+          
+          .client-logo-placeholder {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+          }
+          
           .footer-section {
             padding: 50px var(--section-padding-mobile) 0;
           }
@@ -3029,6 +2821,15 @@ export default function HomePage() {
             font-size: 0.75rem;
           }
           
+          .clients-grid {
+            gap: 15px;
+          }
+          
+          .client-item {
+            padding: 15px;
+            min-height: 100px;
+          }
+          
           .footer-section {
             padding: 40px var(--section-padding-mobile) 0;
           }
@@ -3063,25 +2864,7 @@ export default function HomePage() {
             font-size: 0.85rem;
           }
         }
-        
-        /* Адаптивность для выпадающего меню */
-        @media (max-width: 1024px) {
-          .services-dropdown-wrapper {
-            display: none;
-          }
-          
-          .mobile-nav-item.services-dropdown-mobile {
-            display: flex;
-          }
-        }
-        
-        @media (min-width: 1025px) {
-          .mobile-nav-item.services-dropdown-mobile {
-            display: none;
-          }
-        }
       `}</style>
     </main>
   )
 }
-
