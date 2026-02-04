@@ -1010,3 +1010,4 @@ export default function Bitrix24PricingPage() {
     </div>
   );
 }
+

@@ -427,21 +427,24 @@ export default function HomePage() {
       <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}>
         <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
           <nav className="mobile-nav">
-            {/* Мобильное выпадающее меню */}
+            {/* Мобильное выпадающее меню - ИСПРАВЛЕННАЯ ВЕРСИЯ */}
             <div 
               className="mobile-nav-item services-dropdown-mobile"
               onClick={() => setIsServicesOpen(!isServicesOpen)}
               style={{ 
                 position: 'relative',
                 flexDirection: 'column',
-                alignItems: 'flex-start'
+                alignItems: 'flex-start',
+                paddingBottom: isServicesOpen ? '0' : '20px',
+                overflow: 'hidden'
               }}
             >
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: '100%'
+                width: '100%',
+                marginBottom: '10px'
               }}>
                 <span className="mobile-nav-text">Сервисы</span>
                 <svg 
@@ -451,7 +454,8 @@ export default function HomePage() {
                   fill="currentColor"
                   style={{
                     transition: 'transform 0.2s ease',
-                    transform: isServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+                    transform: isServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    marginRight: '10px'
                   }}
                 >
                   <path d="M6 8.5L1.5 4H10.5L6 8.5Z" />
@@ -461,26 +465,66 @@ export default function HomePage() {
               <AnimatePresence>
                 {isServicesOpen && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: '10px' }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.3 }}
                     className="mobile-dropdown-content"
+                    style={{
+                      width: '100%',
+                      overflow: 'hidden'
+                    }}
                   >
-                    {servicesMenu.map((service) => (
-                      <a
-                        key={service.title}
-                        href={service.href}
-                        onClick={(e) => {
-                          handleDropdownClick(e);
-                          setIsMenuOpen(false);
-                        }}
-                        className="mobile-submenu-item"
-                      >
-                        <div className="mobile-submenu-title">{service.title}</div>
-                        <div className="mobile-submenu-desc">{service.description}</div>
-                      </a>
-                    ))}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                      padding: '0 10px',
+                      background: 'rgba(0, 0, 0, 0.03)',
+                      borderRadius: '6px',
+                      paddingTop: '10px',
+                      paddingBottom: '10px'
+                    }}>
+                      {servicesMenu.map((service) => (
+                        <a
+                          key={service.title}
+                          href={service.href}
+                          onClick={(e) => {
+                            handleDropdownClick(e);
+                            setIsMenuOpen(false);
+                          }}
+                          className="mobile-submenu-item"
+                          style={{
+                            display: 'block',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            textDecoration: 'none',
+                            color: 'var(--black)',
+                            fontSize: '14px',
+                            background: 'var(--white)',
+                            border: '1px solid rgba(19, 19, 19, 0.08)',
+                            transition: 'all 0.2s ease',
+                            marginBottom: '0'
+                          }}
+                        >
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                          }}>
+                            <div className="mobile-submenu-title" style={{
+                              fontWeight: '600',
+                              marginBottom: '4px',
+                              fontSize: '13px'
+                            }}>{service.title}</div>
+                            <div className="mobile-submenu-desc" style={{
+                              fontSize: '11px',
+                              opacity: '0.7',
+                              lineHeight: '1.3'
+                            }}>{service.description}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -2683,6 +2727,534 @@ export default function HomePage() {
         }
         
         /* ===================== АДАПТИВНОСТЬ ===================== */
+        /* ===================== МОБИЛЬНОЕ МЕНЮ ===================== */
+        .mobile-menu-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 1003;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.open {
+          opacity: 1;
+          visibility: visible;
+        }
+        
+        .mobile-menu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 320px;
+          height: 100vh;
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(40px) saturate(180%);
+          -webkit-backdrop-filter: blur(40px) saturate(180%);
+          border-left: 1px solid rgba(255, 255, 255, 0.3);
+          z-index: 1005;
+          padding: 2rem;
+          display: flex;
+          flex-direction: column;
+          transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+          box-shadow: 
+            -4px 0 20px rgba(0, 0, 0, 0.05),
+            inset 1px 0 0 rgba(255, 255, 255, 0.2);
+          border-radius: 20px 0 0 20px;
+          overflow-y: auto;
+        }
+        
+        .mobile-menu.open {
+          right: 0;
+        }
+        
+        .mobile-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          flex-grow: 1;
+        }
+        
+        .mobile-nav-item {
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-start;
+          height: 96px;
+          padding: 0 30px 20px 30px;
+          border-radius: 8px;
+          text-decoration: none;
+          color: var(--black);
+          font-weight: 500;
+          font-size: 16px;
+          letter-spacing: 0.02em;
+          transition: all 0.2s ease;
+          background: rgba(248, 248, 248, 0.9);
+          border: 1px solid rgba(19, 19, 19, 0.08);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          position: relative;
+          overflow: hidden;
+          text-align: left;
+          line-height: 1;
+        }
+        
+        .mobile-nav-item:hover {
+          background: var(--black);
+          color: var(--white);
+          border-color: var(--black);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+          transform: translateY(-1px);
+        }
+        
+        .mobile-nav-text {
+          font-size: 16px;
+          font-weight: 500;
+        }
+        
+        .mobile-nav-arrow {
+          display: none;
+        }
+        
+        .mobile-nav-item:hover .mobile-nav-arrow {
+          transform: translateX(4px);
+          opacity: 1;
+        }
+        
+        /* Специальные стили для выпадающего меню "Сервисы" в мобильной версии */
+        .services-dropdown-mobile {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding-bottom: 20px;
+          transition: all 0.3s ease;
+          overflow: visible !important;
+          position: relative;
+        }
+        
+        .services-dropdown-mobile.open {
+          padding-bottom: 0;
+        }
+        
+        .mobile-dropdown-content {
+          width: 100% !important;
+          overflow: hidden !important;
+          margin-top: 10px !important;
+        }
+        
+        .mobile-submenu-item {
+          display: block !important;
+          padding: 12px !important;
+          border-radius: 6px !important;
+          text-decoration: none !important;
+          color: var(--black) !important;
+          font-size: 14px !important;
+          background: var(--white) !important;
+          border: 1px solid rgba(19, 19, 19, 0.08) !important;
+          transition: all 0.2s ease !important;
+          margin-bottom: 8px !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        
+        .mobile-submenu-item:last-child {
+          margin-bottom: 0 !important;
+        }
+        
+        .mobile-submenu-item:hover {
+          background: var(--black) !important;
+          color: var(--white) !important;
+          border-color: var(--black) !important;
+          transform: translateY(-1px) !important;
+        }
+        
+        .mobile-submenu-title {
+          font-weight: 600 !important;
+          margin-bottom: 4px !important;
+          font-size: 13px !important;
+          color: inherit !important;
+        }
+        
+        .mobile-submenu-desc {
+          font-size: 11px !important;
+          opacity: 0.7 !important;
+          line-height: 1.3 !important;
+          color: inherit !important;
+        }
+        
+        .mobile-nav-item.hello {
+          background: var(--black);
+          color: var(--white);
+          border-color: var(--black);
+        }
+        
+        .mobile-nav-item.hello:hover {
+          background: var(--white);
+          color: var(--black);
+          border-color: var(--black);
+        }
+        
+        .mobile-nav-item.hello .highlight {
+          font-weight: 600;
+          color: #fa6151;
+        }
+        
+        .mobile-nav-item.hello .shape-icon {
+          color: #fa6151;
+        }
+        
+        .star-icon-corner {
+          position: absolute;
+          top: 15px;
+          right: 20px;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fa6151;
+          opacity: 0.9;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        
+        .star-icon-corner svg {
+          width: 100%;
+          height: 100%;
+        }
+        
+        .mobile-menu-footer {
+          margin-top: auto;
+          padding-top: 2rem;
+          border-top: 1px solid rgba(19, 19, 19, 0.1);
+        }
+        
+        .mobile-contact-label {
+          font-size: 0.875rem;
+          color: #666;
+          margin-bottom: 0.5rem;
+        }
+        
+        .mobile-contact-email {
+          font-size: 1.125rem;
+          color: var(--black);
+          text-decoration: none;
+          font-weight: 500;
+        }
+        
+        .mobile-contact-email:hover {
+          color: #fa6151;
+        }
+        
+        /* ===================== МОБИЛЬНАЯ АДАПТИВНОСТЬ ===================== */
+        
+        @media (max-width: 768px) {
+          .mobile-menu {
+            width: 280px;
+            padding: 1.5rem;
+          }
+          
+          .mobile-nav {
+            gap: 10px;
+          }
+          
+          .mobile-nav-item {
+            height: 80px;
+            padding: 0 20px 15px 20px;
+          }
+          
+          .mobile-nav-text {
+            font-size: 15px;
+          }
+          
+          /* Улучшенные стили для выпадающего меню на мобильных */
+          .services-dropdown-mobile {
+            min-height: 80px;
+          }
+          
+          .mobile-dropdown-content {
+            padding-left: 0 !important;
+          }
+          
+          .mobile-submenu-item {
+            padding: 10px !important;
+            margin-bottom: 6px !important;
+          }
+          
+          .mobile-submenu-title {
+            font-size: 12px !important;
+          }
+          
+          .mobile-submenu-desc {
+            font-size: 10px !important;
+          }
+          
+          .star-icon-corner {
+            top: 12px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .mobile-menu {
+            width: 260px;
+            padding: 1.2rem;
+          }
+          
+          .mobile-nav-item {
+            height: 75px;
+            padding: 0 18px 12px 18px;
+          }
+          
+          .mobile-nav-text {
+            font-size: 14px;
+          }
+          
+          .mobile-submenu-item {
+            padding: 8px !important;
+          }
+        }
+        /* ===================== МОБИЛЬНАЯ АДАПТИВНОСТЬ ===================== */
+        
+        /* 1. Блок "О нас" - адаптивная сетка */
+        @media (max-width: 1024px) {
+          .benefits-breakbar-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .benefits-breakbar-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+          }
+          
+          .breakbar-benefit-card {
+            padding: 20px;
+          }
+          
+          .breakbar-benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+          }
+          
+          .breakbar-benefit-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+          }
+          
+          .breakbar-benefit-desc {
+            font-size: 0.9rem;
+            line-height: 1.4;
+          }
+        }
+        
+        /* 2. Блок "Наши друзья" - адаптивная типографика и сетка */
+        @media (max-width: 1200px) {
+          .clients-heading {
+            font-size: 2.8rem;
+          }
+          
+          .clients-logos-grid {
+            gap: 20px;
+          }
+        }
+        
+        @media (max-width: 1024px) {
+          .clients-main-container {
+            padding: 40px;
+          }
+          
+          .clients-heading {
+            font-size: 2.4rem;
+            margin-bottom: 15px;
+          }
+          
+          .clients-subheading {
+            font-size: 1.1rem;
+          }
+          
+          .clients-content-container {
+            grid-template-columns: 1fr;
+            gap: 30px;
+          }
+          
+          .dropzone-title {
+            font-size: 1.3rem;
+          }
+          
+          .dropzone-subtitle {
+            font-size: 1rem;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .clients-main-container {
+            padding: 30px;
+          }
+          
+          .clients-header {
+            margin-bottom: 30px;
+          }
+          
+          .clients-heading {
+            font-size: 1.8rem;
+            line-height: 1.2;
+          }
+          
+          .clients-subheading {
+            font-size: 1rem;
+            line-height: 1.5;
+          }
+          
+          .clients-logos-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+          }
+          
+          .client-logo-box {
+            padding: 20px;
+          }
+          
+          .dropzone {
+            padding: 30px;
+            min-height: 200px;
+          }
+          
+          .dropzone-icon {
+            width: 48px;
+            height: 48px;
+          }
+          
+          .dropzone-title {
+            font-size: 1.2rem;
+          }
+          
+          .dropzone-subtitle {
+            font-size: 0.95rem;
+          }
+          
+          .loading-text {
+            font-size: 1.3rem;
+          }
+          
+          .loading-subtext {
+            font-size: 1rem;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .clients-main-container {
+            padding: 20px;
+          }
+          
+          .clients-heading {
+            font-size: 1.5rem;
+          }
+          
+          .clients-subheading {
+            font-size: 0.9rem;
+          }
+          
+          .clients-logos-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+          
+          .client-logo-box {
+            padding: 15px;
+          }
+          
+          .dropzone {
+            padding: 20px;
+            min-height: 180px;
+          }
+          
+          .dropzone-icon {
+            width: 40px;
+            height: 40px;
+          }
+          
+          .dropzone-title {
+            font-size: 1.1rem;
+          }
+          
+          .dropzone-subtitle {
+            font-size: 0.9rem;
+          }
+        }
+        
+        /* 3. Figma Cursors адаптивность */
+        @media (max-width: 768px) {
+          .figma-cursors-container {
+            height: 280px;
+            padding: 15px;
+          }
+          
+          .cursor-element {
+            transform: scale(0.8) translate(-50%, -50%);
+          }
+          
+          .cursors-text-overlay {
+            padding: 15px;
+            bottom: 10px;
+            max-width: 320px;
+          }
+          
+          .cursors-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+          }
+          
+          .cursors-description {
+            font-size: 0.85rem;
+            line-height: 1.4;
+          }
+          
+          .cursor-label {
+            min-width: 70px;
+            padding: 4px 6px;
+            transform: scale(0.9);
+          }
+          
+          .cursor-name {
+            font-size: 0.75rem;
+          }
+          
+          .cursor-role {
+            font-size: 0.6rem;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .figma-cursors-container {
+            height: 240px;
+            padding: 10px;
+          }
+          
+          .cursor-element {
+            transform: scale(0.6) translate(-50%, -50%);
+          }
+          
+          .cursors-text-overlay {
+            padding: 12px 15px;
+            max-width: 280px;
+          }
+          
+          .cursors-title {
+            font-size: 0.9rem;
+          }
+          
+          .cursors-description {
+            font-size: 0.8rem;
+          }
+        }
+        
+        /* 4. Общая адаптивность для всех секций */
         @media (max-width: 1200px) {
           .home-main {
             gap: 60px;
@@ -2747,14 +3319,6 @@ export default function HomePage() {
           
           .project-card {
             height: 250px;
-          }
-          
-          .figma-cursors-container {
-            padding: 30px;
-          }
-          
-          .cursors-text-overlay {
-            padding: 18px 25px;
           }
           
           .about-benefits {
@@ -2885,41 +3449,6 @@ export default function HomePage() {
             height: 220px;
           }
           
-          .figma-cursors-container {
-            padding: 20px;
-            height: 320px;
-          }
-          
-          .cursors-text-overlay {
-            padding: 15px 20px;
-            bottom: 20px;
-          }
-          
-          .cursors-title {
-            font-size: 1.1rem;
-          }
-          
-          .cursors-description {
-            font-size: 0.85rem;
-          }
-          
-          .cursor-label {
-            min-width: 80px;
-            padding: 5px 8px;
-          }
-          
-          .cursor-name {
-            font-size: 0.8rem;
-          }
-          
-          .cursor-role {
-            font-size: 0.65rem;
-          }
-          
-          .about-benefits {
-            padding: 0 20px;
-          }
-          
           .benefits-grid {
             grid-template-columns: 1fr;
             gap: 20px;
@@ -3012,23 +3541,6 @@ export default function HomePage() {
             height: 200px;
           }
           
-          .figma-cursors-container {
-            height: 280px;
-            padding: 15px;
-          }
-          
-          .cursors-text-overlay {
-            padding: 12px 15px;
-          }
-          
-          .cursor-label {
-            min-width: 70px;
-          }
-          
-          .cursor-name {
-            font-size: 0.75rem;
-          }
-          
           .footer-section {
             padding: 40px var(--section-padding-mobile) 0;
           }
@@ -3084,4 +3596,3 @@ export default function HomePage() {
     </main>
   )
 }
-
