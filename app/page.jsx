@@ -938,7 +938,7 @@ export default function HomePage() {
                   <span className="footer-block-text">Телефон: +7 (903) 612-73-66</span>
                 </li>
                 <li className="footer-block-item">
-                  <span className="footer-block-text">Адрес: Москва</span>
+                  <span className="footer-block-text">Адрес: Московская область, г.о. Химки, ул.Соколовуская 4 квартал, д.18</span>
                 </li>
               </ul>
             </div>
