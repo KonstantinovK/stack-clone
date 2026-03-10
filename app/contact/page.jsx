@@ -439,10 +439,10 @@ export default function ContactPage() {
                   <span className="footer-block-text">Email: hello@stackroom.ru</span>
                 </li>
                 <li className="footer-block-item">
-                  <span className="footer-block-text">Телефон: +7 (999) 123-45-67</span>
+                  <span className="footer-block-text">Телефон: +7 (903) 612-73-66</span>
                 </li>
                 <li className="footer-block-item">
-                  <span className="footer-block-text">Адрес: Москва, ул. Примерная, 123</span>
+                  <span className="footer-block-text">Адрес: Московская область, г.о. Химки, ул.Соколовуская 4 квартал, д.18</span>
                 </li>
               </ul>
             </div>
